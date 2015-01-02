@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<br>
+<div class="panel panel-primary" style="border-color: rgba(133, 196, 237, 0.2); border-radius: 10px;">
+    <div class=" panel-heading" style="background-color:  rgba(133, 196, 237, 0.2); border: none;"><h3 style="color: black;">Command</h3></div>
+    <div class="panel-body" style="background-color: rgba(133, 196, 237, 0.2)">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label>
+                    <select class="form-control" id="dropdown" onchange="selectionChanged();">
+                        <option hidden>Choose Actor...</option>
+                    </select>
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="type" class="col-sm-1 control-label">Typ </label>
+                <div class="col-sm-2">
+                    <output id="type" class="form-control"></output>
+                </div>
+                <div class="col-sm-1 col-sm-offset-1 radio">
+                    <label><input type="radio" name="On" id="on" /> On</label>
+                </div>
+                <label for="level" class="col-sm-1 control-label">Stufe: </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="level" placeholder="Level" />
+                </div>
+                <label for="threshold" class="col-sm-1 control-label">Schwellwert: </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="threshold" placeholder="Threshold" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="position" class="col-sm-1 control-label">Position </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="position" placeholder="Position" />
+                </div>
+                <div class="col-sm-1 col-sm-offset-1 radio">
+                    <label><input type="radio" name="On" id="off" /> Off</label>
+                </div>
+                <label for="radius" class="col-sm-1 control-label">Radius: </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="radius" placeholder="Radius" />
+                </div>
+                <label for="interval" class="col-sm-1 control-label">Interval: </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="interval" placeholder="Interval" />
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" id="sendButton" class="btn btn-primary pull-right">Submit Command</button>
+            </div>
+        </form>
+        <div class="form-group" id="commandError">
+        </div>
+    </div>
+</div>
+<p>
+    <br>(Only 10 events displayed in this view)
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Name</th>
+            <th>Timestamp</th>
+            <th>Type</th>
+            <th>Sender</th>
+            <th>Body</th>
+        </tr>
+    </thead>
+    <tbody id="entry"></tbody>
+</table>
+<div id="eventsError"></div>
+
+@section scripts {
+
+<script>
+    var viewbagTenant = "@(ViewBag.tenant)";
+    $(document).ready(function () {
+        getEvents();
+        getActors();
+        $("#sendButton").click(function () {
+            var input = $("#commandInput").val();
+            var e = document.getElementById("dropdown");
+            var id = e.options[e.selectedIndex].value;
+            putConfig(id);
+        });
+        $("#deleteAllButton").click(function () {
+            deleteAll();
+        })
+        $('a').on('click', function () {
+            $('#formPosition').html("Testcontent");
+        });
+    });
+</script>
+
+<script src="~/Scripts/welcome.js"></script>
+}
